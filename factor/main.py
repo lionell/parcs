@@ -6,8 +6,9 @@ class Factor(Service):
         n = unpack_int(self.recv())
         a = unpack_int(self.recv())
         b = unpack_int(self.recv())
+        self.logger.info(f'Looking for factors of {n} between {a} and {b}')
         facts = []
-        for i in range(a, b + 1):
+        for i in range(a, b):
             if n % i == 0:
                 self.logger.info(f'{n} is divisible by {i}')
                 facts.append(i)
