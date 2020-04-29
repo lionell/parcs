@@ -1,0 +1,6 @@
+#!/usr/bin/env fish
+
+docker build -f runner/Dockerfile -t lionell/parcs-runner .
+docker build -f sleeper/Dockerfile -t lionell/parcs-sleeper .
+docker push lionell/parcs-runner:latest
+docker push lionell/parcs-sleeper:latest
