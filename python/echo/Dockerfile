@@ -1,9 +1,4 @@
-FROM python:3
+FROM lionell/parcs-python
 
-WORKDIR /app
-COPY parcs parcs/
-COPY echo echo/
-
-EXPOSE 4444
-
-CMD [ "python", "-m", "echo.echo" ]
+COPY main.py .
+CMD [ "python", "main.py" ]

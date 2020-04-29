@@ -1,8 +1,4 @@
-FROM python:3
+FROM lionell/parcs-python
 
-COPY parcs parcs/
-RUN pip install --no-cache-dir docker
-EXPOSE 4444
-
-COPY sleeper sleeper/
-CMD [ "python", "-m", "sleeper.main" ]
+COPY main.py .
+CMD [ "python", "main.py" ]
