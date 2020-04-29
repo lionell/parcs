@@ -13,6 +13,7 @@ class Service:
         self.server.listen()
 
     def start(self):
+        self.logger.info('Execution started')
         self.client, (ip, unused_port) = self.server.accept()
         handshake(self.client, side='server')
         self.logger.info(f'Client from {ip} connected')
@@ -20,6 +21,7 @@ class Service:
     def shutdown(self):
         self.client.close()
         self.server.close()
+        self.logger.info('Execution finished')
 
     def send(self, data):
         self.logger.info(f'Sending {data} over the wire')
