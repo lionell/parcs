@@ -1,8 +1,4 @@
-FROM python:3
+FROM lionell/parcs-python
 
-COPY parcs parcs/
-EXPOSE 4444
-RUN pip install --no-cache-dir docker
-
-COPY runner runner/
-CMD [ "python", "-m", "runner.main" ]
+COPY main.py .
+CMD [ "python", "main.py" ]
