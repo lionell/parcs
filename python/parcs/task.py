@@ -1,12 +1,6 @@
 import socket
 import logging
-from parcs.network import (
-    dns_lookup,
-    connect,
-    handshake,
-    send,
-    recv,
-)
+from parcs.network import *
 
 class Task:
     def __init__(self, service):
