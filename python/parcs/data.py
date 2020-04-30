@@ -2,7 +2,7 @@ BYTES_IN_INT = 8
 BYTEORDER = 'big'
 
 def pack_int(n):
-    return int.to_bytes(n, length=BYTES_IN_INT, byteorder=BYTEORDER)
+    return n.to_bytes(length=BYTES_IN_INT, byteorder=BYTEORDER)
 
 def unpack_int(bs):
     return int.from_bytes(bs, byteorder=BYTEORDER)
