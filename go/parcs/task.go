@@ -22,6 +22,9 @@ func NewTask(image string, engine *Engine) (*Task, error) {
 		return nil, err
 	}
 	conn, err := connect(name)
+	if err != nil {
+		return nil, err
+	}
 	handshake(conn, Client)
 	log.Printf("Connection to %s established", name)
 	return &Task{
