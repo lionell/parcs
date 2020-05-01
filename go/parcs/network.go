@@ -66,7 +66,7 @@ func recv(conn net.Conn, v interface{}) error {
 }
 
 func recvAllBytes(conn net.Conn, n int) ([]byte, error) {
-	log.Printf("Called with %v", n)
+	log.Printf("Called with %v %v", conn, n)
 	bytes := make([]byte, n)
 	received := 0
 	for received < n {
