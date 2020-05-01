@@ -1,6 +1,12 @@
 BYTES_IN_INT = 8
 BYTEORDER = 'big'
 
+def marshal(obj):
+    return json.dumps(obj).encode()
+
+def unmarshal(bs):
+    return json.loads(bs.decode())
+
 def pack_int(n):
     return n.to_bytes(length=BYTES_IN_INT, byteorder=BYTEORDER)
 

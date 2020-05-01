@@ -14,12 +14,10 @@ type Task struct {
 
 func NewTask(image string, engine *Engine) (*Task, error) {
 	id, err := engine.createService(image)
-	log.Printf("Created a service with ID '%s'", id)
 	if err != nil {
 		return nil, err
 	}
 	name, err := engine.queryServiceName(id)
-	log.Printf("Service is called '%s'", name)
 	if err != nil {
 		return nil, err
 	}
@@ -38,7 +36,6 @@ func NewTask(image string, engine *Engine) (*Task, error) {
 }
 
 func (t *Task) Send(v interface{}) error {
-	log.Printf("Trying to send %v", v)
 	return send(t.conn, v)
 }
 

@@ -76,14 +76,10 @@ func recv(conn net.Conn, v interface{}) error {
 }
 
 func recvAllBytes(conn net.Conn, n int) ([]byte, error) {
-	log.Printf("Called with %v %v", conn, n)
 	bytes := make([]byte, n)
 	received := 0
 	for received < n {
-		log.Printf("received=%v", received)
-		log.Printf("bytes[received:]=%v", bytes[received:])
 		m, err := conn.Read(bytes[received:])
-		log.Printf("m=%v", m)
 		if err != nil {
 			return nil, err
 		}
@@ -102,16 +98,13 @@ func handshake(conn net.Conn, s Side) error {
 		if !b.Equal(bytes, SYN) {
 			return fmt.Errorf("Expecting SYN got %v", bytes)
 		}
-		log.Printf("Client received SYN")
 		if err := sendAllBytes(conn, ACK); err != nil {
 			return err
 		}
-		log.Printf("Client sent ACK")
 	case Server:
 		if err := sendAllBytes(conn, SYN); err != nil {
 			return err
 		}
-		log.Printf("Server sent SYN")
 		bytes, err := recvAllBytes(conn, 3)
 		if err != nil {
 			return err
@@ -119,8 +112,6 @@ func handshake(conn net.Conn, s Side) error {
 		if !b.Equal(bytes, ACK) {
 			return fmt.Errorf("Expecting ACK got %v", bytes)
 		}
-		log.Printf("Server received ACK")
 	}
-	log.Printf("Handshake successful")
 	return nil
 }

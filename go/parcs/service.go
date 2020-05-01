@@ -35,7 +35,6 @@ func (s *Service) Init() {
 		log.Fatalf("Error while accepting a connection: %v", err)
 	}
 	handshake(s.conn, Server)
-	log.Printf("Handshake successfull")
 }
 
 func (s *Service) Shutdown() {
@@ -44,7 +43,6 @@ func (s *Service) Shutdown() {
 }
 
 func (s *Service) Send(v interface{}) error {
-	log.Printf("Service.Send(%v)", v)
 	return send(s.conn, v)
 }
 
