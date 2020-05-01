@@ -8,8 +8,7 @@ type Task struct {
 	serviceID   string
 	serviceName string
 	conn        net.Conn
-
-	engine *Engine
+	engine      *Engine
 }
 
 func NewTask(image string, engine *Engine) (*Task, error) {
@@ -30,12 +29,12 @@ func NewTask(image string, engine *Engine) (*Task, error) {
 	}, nil
 }
 
-func (t *Task) Send(v interface{}) {
-	send(t.conn, v)
+func (t *Task) Send(v interface{}) error {
+	return send(t.conn, v)
 }
 
-func (t *Task) Recv(v interface{}) {
-	recv(t.conn, v)
+func (t *Task) Recv(v interface{}) error {
+	return recv(t.conn, v)
 }
 
 func (t *Task) Shutdown() error {
