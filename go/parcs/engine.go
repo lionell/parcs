@@ -21,7 +21,10 @@ func NewEnvEngine() *Engine {
 }
 
 func NewEngine(leaderUrl string) *Engine {
-	client, err := docker.NewClient(leaderUrl, "", nil, nil)
+	client, err := docker.NewClientWithOpts(
+		docker.WithHost(leaderUrl),
+		docker.WithAPIVersionNegotiation(),
+	)
 	if err != nil {
 		log.Fatalf("Error while connecting to the Swarm Leader: %v", err)
 	}
@@ -42,7 +45,7 @@ func (e *Engine) Start(image string) (*Task, error) {
 func (e *Engine) createService(image string) (id string, err error) {
 	spec := swarm.ServiceSpec{
 		TaskTemplate: swarm.TaskSpec{
-			ContainerSpec: swarm.ContainerSpec{
+			ContainerSpec: &swarm.ContainerSpec{
 				Image: image,
 				Env:   []string{"LEADER_URL=" + e.leaderUrl},
 			},
@@ -71,6 +74,7 @@ func (e *Engine) queryServiceName(id string) (name string, err error) {
 	s, _, err := e.client.ServiceInspectWithRaw(
 		context.Background(),
 		id,
+		types.ServiceInspectOptions{},
 	)
 	if err != nil {
 		return
