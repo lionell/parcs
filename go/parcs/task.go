@@ -23,8 +23,7 @@ func NewTask(image string, engine *Engine) (*Task, error) {
 	if err != nil {
 		return nil, err
 	}
-	conn, err := connect(name)
-	log.Printf("conn=%v, err=%v", conn, err)
+	conn := connect(name)
 	if err != nil {
 		return nil, err
 	}

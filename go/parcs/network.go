@@ -5,13 +5,15 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"time"
 )
 
 type Side int
 
 const (
-	Port        = 4444
-	Client Side = iota
+	SleepDuration      = 500 * time.Millisecond
+	Port               = 4444
+	Client        Side = iota
 	Server
 )
 
@@ -24,8 +26,16 @@ func listen() (net.Listener, error) {
 	return net.Listen("tcp", fmt.Sprintf(":%d", Port))
 }
 
-func connect(serviceName string) (net.Conn, error) {
-	return net.Dial("tcp", fmt.Sprintf("%s:%d", serviceName, Port))
+func connect(serviceName string) net.Conn {
+	for {
+		conn, err := net.Dial("tcp", fmt.Sprintf("%s:%d", serviceName, Port))
+		log.Printf("Trying to connect to %s: %v", serviceName, err)
+		if err == nil {
+			log.Printf("Successfully connected to %s", serviceName)
+			return conn
+		}
+		time.Sleep(SleepDuration)
+	}
 }
 
 func send(conn net.Conn, v interface{}) error {
