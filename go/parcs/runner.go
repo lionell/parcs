@@ -4,6 +4,10 @@ type Runner struct {
 	*Engine
 }
 
+func DefaultRunner() *Runner {
+	return NewRunner(NewEnvEngine())
+}
+
 func NewRunner(engine *Engine) *Runner {
 	return &Runner{engine}
 }
