@@ -28,8 +28,9 @@ func NewService(engine *Engine) *Service {
 }
 
 func (s *Service) Init() {
-	var err error
-	s.conn, err = s.listener.Accept()
+	conn, err := s.listener.Accept()
+	s.conn = conn
+	log.Printf("s.conn=%v, err=%v", s.conn, err)
 	if err != nil {
 		log.Fatalf("Error while accepting a connection: %v", err)
 	}
