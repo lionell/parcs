@@ -12,6 +12,10 @@ type Service struct {
 	*Engine
 }
 
+func DefaultService() *Service {
+	return NewService(NewEnvEngine())
+}
+
 func NewService(engine *Engine) *Service {
 	l, err := listen()
 	if err != nil {
