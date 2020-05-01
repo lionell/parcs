@@ -33,6 +33,7 @@ func (s *Service) Init() {
 	if err != nil {
 		log.Fatalf("Error while accepting a connection: %v", err)
 	}
+	handshake(s.conn, Server)
 }
 
 func (s *Service) Shutdown() {

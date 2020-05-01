@@ -1,11 +1,23 @@
 package parcs
 
 import (
+	b "bytes"
 	"fmt"
 	"net"
 )
 
-const Port = 4444
+type Side int
+
+const (
+	Port        = 4444
+	Client Side = iota
+	Server
+)
+
+var (
+	SYN = []byte("SYN")
+	ACK = []byte("ACK")
+)
 
 func listen() (net.Listener, error) {
 	return net.Listen("tcp", fmt.Sprintf(":%d", Port))
@@ -63,4 +75,33 @@ func recvAllBytes(conn net.Conn, n int) ([]byte, error) {
 		received += m
 	}
 	return bytes, nil
+}
+
+func handshake(conn net.Conn, s Side) error {
+	switch s {
+	case Client:
+		bytes, err := recvAllBytes(conn, 3)
+		if err != nil {
+			return err
+		}
+
+		if !b.Equal(bytes, SYN) {
+			return fmt.Errorf("Expecting SYN got %v", bytes)
+		}
+		if err := sendAllBytes(conn, ACK); err != nil {
+			return err
+		}
+	case Server:
+		if err := sendAllBytes(conn, SYN); err != nil {
+			return err
+		}
+		bytes, err := recvAllBytes(conn, 3)
+		if err != nil {
+			return err
+		}
+		if !b.Equal(bytes, ACK) {
+			return fmt.Errorf("Expecting ACK got %v", bytes)
+		}
+	}
+	return nil
 }

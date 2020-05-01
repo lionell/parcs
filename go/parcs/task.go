@@ -1,6 +1,7 @@
 package parcs
 
 import (
+	"log"
 	"net"
 )
 
@@ -21,6 +22,8 @@ func NewTask(image string, engine *Engine) (*Task, error) {
 		return nil, err
 	}
 	conn, err := connect(name)
+	handshake(conn, Client)
+	log.Printf("Connection to %s established", name)
 	return &Task{
 		serviceID:   id,
 		serviceName: name,
@@ -30,6 +33,7 @@ func NewTask(image string, engine *Engine) (*Task, error) {
 }
 
 func (t *Task) Send(v interface{}) error {
+	log.Printf("Trying to send %v", v)
 	return send(t.conn, v)
 }
 
