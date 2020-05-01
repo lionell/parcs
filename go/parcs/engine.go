@@ -71,7 +71,7 @@ func (e *Engine) queryServiceName(id string) (name string, err error) {
 	s, _, err := e.client.ServiceInspectWithRaw(
 		context.Background(),
 		id,
-		types.ServiceInspectOptions{}
+		types.ServiceInspectOptions{},
 	)
 	if err != nil {
 		return
