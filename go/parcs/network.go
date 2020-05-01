@@ -121,5 +121,6 @@ func handshake(conn net.Conn, s Side) error {
 		}
 		log.Printf("Server received ACK")
 	}
+	log.Printf("Handshake successful")
 	return nil
 }
