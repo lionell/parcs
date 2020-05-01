@@ -71,7 +71,9 @@ func recvAllBytes(conn net.Conn, n int) ([]byte, error) {
 	received := 0
 	for received < n {
 		log.Printf("received=%v", received)
+		log.Printf("bytes[received:]=%v", bytes[received:])
 		m, err := conn.Read(bytes[received:])
+		log.Printf("m=%v", m)
 		if err != nil {
 			return nil, err
 		}
