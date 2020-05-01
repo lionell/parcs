@@ -14,14 +14,17 @@ type Task struct {
 
 func NewTask(image string, engine *Engine) (*Task, error) {
 	id, err := engine.createService(image)
+	log.Printf("Created a service with ID '%s'", id)
 	if err != nil {
 		return nil, err
 	}
 	name, err := engine.queryServiceName(id)
+	log.Printf("Service is called '%s'", name)
 	if err != nil {
 		return nil, err
 	}
 	conn, err := connect(name)
+	log.Printf("conn=%v, err=%v", conn, err)
 	if err != nil {
 		return nil, err
 	}
