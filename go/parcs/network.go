@@ -3,6 +3,7 @@ package parcs
 import (
 	b "bytes"
 	"fmt"
+	"log"
 	"net"
 )
 
@@ -65,9 +66,11 @@ func recv(conn net.Conn, v interface{}) error {
 }
 
 func recvAllBytes(conn net.Conn, n int) ([]byte, error) {
+	log.Printf("Called with %v", n)
 	bytes := make([]byte, n)
 	received := 0
 	for received < n {
+		log.Printf("received=%v", received)
 		m, err := conn.Read(bytes[received:])
 		if err != nil {
 			return nil, err
@@ -84,7 +87,6 @@ func handshake(conn net.Conn, s Side) error {
 		if err != nil {
 			return err
 		}
-
 		if !b.Equal(bytes, SYN) {
 			return fmt.Errorf("Expecting SYN got %v", bytes)
 		}
