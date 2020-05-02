@@ -1,7 +1,6 @@
 import os
 import math
 from parcs.server import Runner, serve
-from parcs.data import pack_int, unpack_ints
 
 def split(n, p):
     chunk = math.ceil((n - 2) / p)
@@ -19,10 +18,8 @@ def split(n, p):
 
 class Example(Runner):
     def _find(self, n, a, b):
-        t = self.engine.run('lionell/parcs-factor')
-        t.send(pack_int(n))
-        t.send(pack_int(a))
-        t.send(pack_int(b))
+        t = self.engine.run('lionell/factor-py')
+        t.send_all(n, a, b)
         return t
 
     def run(self):
@@ -30,10 +27,12 @@ class Example(Runner):
         p = int(os.environ.get('P'))
         tasks = []
         for (a, b) in split(n, p):
-            tasks.append(self._find(n, a, b))
+            t = self.engine.run('lionell/factor-py')
+            t.send_all(n, a, b)
+            tasks.append(t)
         facts = []
         for t in tasks:
-            facts += unpack_ints(t.recv())
+            facts += t.recv()
         for t in tasks:
             t.shutdown()
         self.logger.info(f'Factors found: {facts}')

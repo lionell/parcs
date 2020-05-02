@@ -9,9 +9,10 @@ type Executable interface {
 }
 
 func Exec(e Executable) {
+	log.Printf("Welcome to PARCS-Go!")
 	e.Init()
-	log.Printf("Initialized successfully")
+	log.Printf("Running your program...")
 	e.Run()
 	e.Shutdown()
-	log.Printf("Shut down successfully")
+	log.Printf("Bye!")
 }

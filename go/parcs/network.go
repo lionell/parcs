@@ -3,7 +3,6 @@ package parcs
 import (
 	b "bytes"
 	"fmt"
-	"log"
 	"net"
 	"time"
 )
@@ -29,9 +28,7 @@ func listen() (net.Listener, error) {
 func connect(serviceName string) net.Conn {
 	for {
 		conn, err := net.Dial("tcp", fmt.Sprintf("%s:%d", serviceName, Port))
-		log.Printf("Trying to connect to %s: %v", serviceName, err)
 		if err == nil {
-			log.Printf("Successfully connected to %s", serviceName)
 			return conn
 		}
 		time.Sleep(SleepDuration)
@@ -40,6 +37,15 @@ func connect(serviceName string) net.Conn {
 
 func send(conn net.Conn, v interface{}) error {
 	return sendBytes(conn, marshal(v))
+}
+
+func sendAll(conn net.Conn, vs ...interface{}) error {
+	for _, v := range vs {
+		if err := send(conn, v); err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 func sendBytes(conn net.Conn, bytes []byte) error {
@@ -62,13 +68,17 @@ func sendAllBytes(conn net.Conn, bytes []byte) error {
 	return nil
 }
 
-func recv(conn net.Conn, v interface{}) error {
+func recvBytes(conn net.Conn) ([]byte, error) {
 	bytes, err := recvAllBytes(conn, BytesInInt)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	l := int(decodeUint64(bytes))
-	bytes, err = recvAllBytes(conn, l)
+	return recvAllBytes(conn, l)
+}
+
+func recv(conn net.Conn, v interface{}) error {
+	bytes, err := recvBytes(conn)
 	if err != nil {
 		return err
 	}
@@ -91,17 +101,6 @@ func recvAllBytes(conn net.Conn, n int) ([]byte, error) {
 func handshake(conn net.Conn, s Side) error {
 	switch s {
 	case Client:
-		bytes, err := recvAllBytes(conn, 3)
-		if err != nil {
-			return err
-		}
-		if !b.Equal(bytes, SYN) {
-			return fmt.Errorf("Expecting SYN got %v", bytes)
-		}
-		if err := sendAllBytes(conn, ACK); err != nil {
-			return err
-		}
-	case Server:
 		if err := sendAllBytes(conn, SYN); err != nil {
 			return err
 		}
@@ -111,6 +110,18 @@ func handshake(conn net.Conn, s Side) error {
 		}
 		if !b.Equal(bytes, ACK) {
 			return fmt.Errorf("Expecting ACK got %v", bytes)
+		}
+	case Server:
+
+		bytes, err := recvAllBytes(conn, 3)
+		if err != nil {
+			return err
+		}
+		if !b.Equal(bytes, SYN) {
+			return fmt.Errorf("Expecting SYN got %v", bytes)
+		}
+		if err := sendAllBytes(conn, ACK); err != nil {
+			return err
 		}
 	}
 	return nil

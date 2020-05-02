@@ -1,21 +1,27 @@
 import struct
 import socket
 import time
-from parcs.data import BYTES_IN_INT, pack_int, unpack_int
+import logging
+from parcs.data import *
 
 SLEEP_DURATION = 0.5
 PORT = 4444
 
-def send(sock, msg):
-    data = pack_int(len(msg)) + msg
+def send(sock, obj):
+    send_bytes(sock, marshal(obj))
+
+def send_bytes(sock, data):
+    sock.sendall(encode_uint64(len(data)))
     sock.sendall(data)
 
 def recv(sock):
-    raw_len = _recv(sock, BYTES_IN_INT)
-    size = unpack_int(raw_len)
-    return _recv(sock, size)
+    return unmarshal(recv_bytes(sock))
 
-def _recv(sock, size):
+def recv_bytes(sock):
+    size = decode_uint64(_recv_all_bytes(sock, BYTES_IN_INT))
+    return _recv_all_bytes(sock, size)
+
+def _recv_all_bytes(sock, size):
     data = b''
     while len(data) < size:
         chunk = sock.recv(size - len(data))
@@ -26,11 +32,11 @@ def _recv(sock, size):
 
 def handshake(sock, side):
     if side == 'server':
-        assert(_recv(sock, 3) == b'SYN')
+        assert(_recv_all_bytes(sock, 3) == b'SYN')
         sock.sendall(b'ACK')
     else:
         sock.sendall(b'SYN')
-        assert(_recv(sock, 3) == b'ACK')
+        assert(_recv_all_bytes(sock, 3) == b'ACK')
 
 def dns_lookup(hostname):
     while True:

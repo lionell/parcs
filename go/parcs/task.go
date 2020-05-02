@@ -25,7 +25,9 @@ func NewTask(image string, engine *Engine) (*Task, error) {
 	if err != nil {
 		return nil, err
 	}
-	handshake(conn, Client)
+	if err := handshake(conn, Client); err != nil {
+		return nil, err
+	}
 	log.Printf("Connection to %s established", name)
 	return &Task{
 		serviceID:   id,
@@ -39,6 +41,10 @@ func (t *Task) Send(v interface{}) error {
 	return send(t.conn, v)
 }
 
+func (t *Task) SendAll(vs ...interface{}) error {
+	return sendAll(t.conn, vs...)
+}
+
 func (t *Task) Recv(v interface{}) error {
 	return recv(t.conn, v)
 }
@@ -47,5 +53,9 @@ func (t *Task) Shutdown() error {
 	if err := t.conn.Close(); err != nil {
 		return err
 	}
-	return t.engine.removeService(t.serviceID)
+	if err := t.engine.removeService(t.serviceID); err != nil {
+		return err
+	}
+	log.Printf("Connection to %s closed", t.serviceName)
+	return nil
 }

@@ -1,3 +1,4 @@
-FROM golang
+FROM lionell/parcs-go
 
-RUN go get github.com/lionell/parcs/go/parcs
+COPY main.go .
+CMD [ "go", "run", "main.go" ]

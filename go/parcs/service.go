@@ -46,6 +46,10 @@ func (s *Service) Send(v interface{}) error {
 	return send(s.conn, v)
 }
 
+func (s *Service) SendAll(vs ...interface{}) error {
+	return sendAll(s.conn, vs...)
+}
+
 func (s *Service) Recv(v interface{}) error {
 	return recv(s.conn, v)
 }
