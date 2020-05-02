@@ -5,11 +5,11 @@ import (
 	"log"
 )
 
-type Bla struct {
+type Program struct {
 	*parcs.Runner
 }
 
-func (h *Bla) Run() {
+func (h *Program) Run() {
 	t, err := h.Start("lionell/factor-py")
 	if err != nil {
 		log.Fatal(err)
@@ -28,5 +28,5 @@ func (h *Bla) Run() {
 }
 
 func main() {
-	parcs.Exec(&Bla{parcs.DefaultRunner()})
+	parcs.Exec(&Program{parcs.DefaultRunner()})
 }

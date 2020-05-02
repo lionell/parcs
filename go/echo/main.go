@@ -11,9 +11,8 @@ type Echo struct {
 
 func (e *Echo) Run() {
 	var n int
-	log.Printf("BEFORE RECEIVE")
 	e.Recv(&n)
-	log.Printf("Received %v", n)
+	log.Printf("Received %v. Sending it back...", n)
 	e.Send(n)
 }
 
