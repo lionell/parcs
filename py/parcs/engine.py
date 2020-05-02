@@ -1,5 +1,4 @@
 import docker
-import logging
 from parcs.task import Task
 
 PARCS_OVERLAY_NETWORK = 'parcs'
@@ -13,7 +12,6 @@ class Engine:
 
         self.client = docker.DockerClient(base_url=leader_url)
         assert(self.client.ping())
-        logging.info(f'Established connection to the leader at {leader_url}')
 
     def run(self, image):
         return Task(

@@ -3,6 +3,12 @@ import logging
 from parcs.engine import Engine
 from parcs.network import PORT, send, recv, handshake
 
+logging.basicConfig(
+    format='%(asctime)s %(message)s',
+    datefmt='%Y/%m/%d %H:%M:%S',
+    level=logging.INFO
+)
+
 class Runner:
     def __init__(self):
         self.engine = Engine()
@@ -44,11 +50,6 @@ class Service(Runner):
         return recv(self.client)
 
 def serve(executable):
-    logging.basicConfig(
-        format='%(asctime)s [%(levelname)s] %(message)s',
-        datefmt='%y/%m/%d %H:%M:%S',
-        level=logging.INFO
-    )
     logging.info('Welcome to PARCS-Python!')
     try:
         executable.start()
