@@ -5,7 +5,6 @@ from parcs.network import PORT, send, recv, handshake
 
 class Runner:
     def __init__(self):
-        self.logger = logging.getLogger('Runner')
         self.engine = Engine()
 
     def run(self):
@@ -21,8 +20,6 @@ class Runner:
 class Service(Runner):
     def __init__(self):
         super().__init__()
-        self.logger = logging.getLogger('Service')
-
         self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server.bind(('', PORT))
         self.server.listen()
@@ -30,7 +27,7 @@ class Service(Runner):
     def start(self):
         self.client, (ip, unused_port) = self.server.accept()
         handshake(self.client, side='server')
-        self.logger.info(f'Client from {ip} connected')
+        logging.info(f'Client from {ip} connected')
 
     def shutdown(self):
         self.client.close()
@@ -48,8 +45,8 @@ class Service(Runner):
 
 def serve(executable):
     logging.basicConfig(
-        format='%(asctime)s - %(levelname)s %(message)s',
-        datefmt='%d-%b-%y %H:%M:%S',
+        format='%(asctime)s [%(levelname)s] %(message)s',
+        datefmt='%y/%m/%d %H:%M:%S',
         level=logging.INFO
     )
     logging.info('Welcome to PARCS-Python!')

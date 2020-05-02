@@ -1,5 +1,6 @@
 import os
 import math
+import logging
 from parcs.server import Runner, serve
 
 def split(n, p):
@@ -17,14 +18,10 @@ def split(n, p):
 
 
 class Example(Runner):
-    def _find(self, n, a, b):
-        t = self.engine.run('lionell/factor-py')
-        t.send_all(n, a, b)
-        return t
-
     def run(self):
         n = int(os.environ.get('N'))
         p = int(os.environ.get('P'))
+        logging.info(f'Got N = {n}, P = {p} from env vars')
         tasks = []
         for (a, b) in split(n, p):
             t = self.engine.run('lionell/factor-py')
@@ -35,6 +32,6 @@ class Example(Runner):
             facts += t.recv()
         for t in tasks:
             t.shutdown()
-        self.logger.info(f'Factors found: {facts}')
+        logging.info(f'Factors found: {facts}')
 
 serve(Example())

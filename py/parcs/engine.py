@@ -6,7 +6,6 @@ PARCS_OVERLAY_NETWORK = 'parcs'
 
 class Engine:
     def __init__(self, leader_url=None):
-        self.logger = logging.getLogger('Engine')
         if not leader_url:
             import os
             leader_url = os.environ.get('LEADER_URL')
@@ -14,7 +13,7 @@ class Engine:
 
         self.client = docker.DockerClient(base_url=leader_url)
         assert(self.client.ping())
-        self.logger.info(f'Established connection to the leader at {leader_url}')
+        logging.info(f'Established connection to the leader at {leader_url}')
 
     def run(self, image):
         return Task(
