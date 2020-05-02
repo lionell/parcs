@@ -20,11 +20,9 @@ func (h *Program) Run() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Sending data over")
 	if err := t.SendAll(n, 1, n+1); err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Sent successfully")
 	var facts []int
 	if err := t.Recv(&facts); err != nil {
 		log.Fatal(err)
