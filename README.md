@@ -87,18 +87,18 @@ To add a worker to this swarm, run the following command:
 ```
 
 5. Having a `join-token` from the previous step we can connect `worker` nodes to a `leader` like follows:
-```
-$ gcloud compute ssh worker-1
-(ssh-ed into worker-1)
-
-$ sudo docker swarm join --token \
-         SWMTKN-1-4cj55yg229l3updnigyz86p63x9bb599htytlmtbhulo4m633d-4kcfduodzvitw4y52flh19g32 \
-         10.138.0.6:2377
-
-This node joined a swarm as a worker.
-
-```
-Don't forget to do this step for each one of the `worker` nodes you created.
+    ```
+    $ gcloud compute ssh worker-1
+    (ssh-ed into worker-1)
+    
+    $ sudo docker swarm join --token \
+             SWMTKN-1-4cj55yg229l3updnigyz86p63x9bb599htytlmtbhulo4m633d-4kcfduodzvitw4y52flh19g32 \
+             10.138.0.6:2377
+    
+    This node joined a swarm as a worker.
+    
+    ```
+    Don't forget to do this step for each one of the `worker` nodes you created.
 
 [paper]: https://www.scirp.org/journal/paperinformation.aspx?paperid=78011 
 [swarm]: https://docs.docker.com/engine/swarm
