@@ -44,7 +44,7 @@ and follow the instructions. I'm also gonna set up the sensible defaults for my 
 2. Now let's start a couple of VMs that are will form a cluster later. Here I'm creating a cluster of 4 nodes that will be managed by a leader.
 
     ```console
-    me@laptop $ gcloud compute instances create leader worker-1 worker-2 worker-3
+    me@laptop ~:$ gcloud compute instances create leader worker-1 worker-2 worker-3
     
     Created [https://www.googleapis.com/compute/v1/projects/ember-27/zones/us-west1-b/instances/leader].
     Created [https://www.googleapis.com/compute/v1/projects/ember-27/zones/us-west1-b/instances/worker-1].
