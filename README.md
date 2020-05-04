@@ -45,6 +45,7 @@ and follow the instructions. I'm also gonna set up the sensible defaults for my 
 
     ```console
     me@laptop~:$ gcloud compute instances create leader worker-1 worker-2 worker-3
+
     Created [https://www.googleapis.com/compute/v1/projects/ember-27/zones/us-west1-b/instances/leader].
     Created [https://www.googleapis.com/compute/v1/projects/ember-27/zones/us-west1-b/instances/worker-1].
     Created [https://www.googleapis.com/compute/v1/projects/ember-27/zones/us-west1-b/instances/worker-2].
@@ -61,11 +62,9 @@ and follow the instructions. I'm also gonna set up the sensible defaults for my 
 the engine as follows
 
     ```shell
-    $ gcloud compute ssh leader
-    (ssh-ed into leader)
-    
-    $ curl -fsSL https://get.docker.com -o get-docker.sh
-    $ sudo sh get-docker.sh
+    me@laptop~:$ gcloud compute ssh leader
+    me@leader~:$ curl -fsSL https://get.docker.com -o get-docker.sh
+    me@leader~:$ sudo sh get-docker.sh
     
     ...
     ```
