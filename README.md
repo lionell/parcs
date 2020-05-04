@@ -305,7 +305,8 @@ The last step is to make a firewall aware of the Swarmpit. We want to expose a d
 
 ```console
 me@laptop~:$ gcloud compute firewall-rules create swarmpit --allow tcp:888
-Creating firewall...done.                                                                                                                                                                                                                                                                                                                                                                     
+Creating firewall... Done.
+
 NAME     NETWORK  DIRECTION  PRIORITY  ALLOW    DENY  DISABLED
 swarmpit default  INGRESS    1000      tcp:888        False
 ```
