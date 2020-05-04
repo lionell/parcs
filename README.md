@@ -46,10 +46,10 @@ and follow the instructions. I'm also gonna set up the sensible defaults for my 
     ```
     $ gcloud compute instances create leader worker-1 worker-2 worker-3
     
-    Created [https://www.googleapis.com/compute/v1/projects/ember-275604/zones/us-west1-b/instances/leader].
-    Created [https://www.googleapis.com/compute/v1/projects/ember-275604/zones/us-west1-b/instances/worker-1].
-    Created [https://www.googleapis.com/compute/v1/projects/ember-275604/zones/us-west1-b/instances/worker-2].
-    Created [https://www.googleapis.com/compute/v1/projects/ember-275604/zones/us-west1-b/instances/worker-3].
+    Created [https://www.googleapis.com/compute/v1/projects/ember-27/zones/us-west1-b/instances/leader].
+    Created [https://www.googleapis.com/compute/v1/projects/ember-27/zones/us-west1-b/instances/worker-1].
+    Created [https://www.googleapis.com/compute/v1/projects/ember-27/zones/us-west1-b/instances/worker-2].
+    Created [https://www.googleapis.com/compute/v1/projects/ember-27/zones/us-west1-b/instances/worker-3].
     
     NAME      ZONE        MACHINE_TYPE   PREEMPTIBLE  INTERNAL_IP  EXTERNAL_IP     STATUS
     leader    us-west1-b  n1-standard-1               10.138.0.6   35.247.55.235   RUNNING
