@@ -95,7 +95,22 @@ the engine as follows
     This node joined a swarm as a worker.
     ```
 
-    Don't forget to do this step for each one of the `worker` nodes you created.
+    Don't forget to do this step **for each one** of the `worker` nodes you created.
+
+6. **IMPORTANT** PARCS needs `leader`-s Docker Engine to listen on the port `4321`.
+
+    This is the only extra step that users have to take to be able to run PARCS on a
+    barebones Docker Swarm cluster. Here are commands that do exactly that
+
+    ```console
+    me@laptop~:$ gcloud compute ssh leader
+    me@leader~:$ sudo sed -i '/ExecStart/ s/$/ -H tcp:\/\/0.0.0.0:4321/' \
+                        /lib/systemd/system/docker.service
+    me@leader~:$ sudo systemctl daemon-reload
+    me@leader~:$ sudo systemctl restart docker
+    ```
+
+Now we have a fully configured Docker Swarm cluster ready to run PARCS services.
 
 [paper]: https://www.scirp.org/journal/paperinformation.aspx?paperid=78011 
 [swarm]: https://docs.docker.com/engine/swarm
