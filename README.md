@@ -174,7 +174,7 @@ package main
 
 import (
 	"github.com/lionell/parcs/go/parcs"
-    "log"
+	"log"
 	"os"
 	"strconv"
 )
