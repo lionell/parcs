@@ -254,12 +254,12 @@ overall progress: 1 out of 1 tasks
 verify: Service converged 
 
 me@leader~:$ sudo docker service logs -f runner
-runner.1.luy@worker-2| 05:59:31 Welcome to PARCS-Go!
-runner.1.luy@worker-2| 05:59:31 Running your program...
-runner.1.luy@worker-2| 06:00:06 Connection to silly_shtern established
-runner.1.luy@worker-2| 06:00:17 Factors [1 3 9 3607 3803 10821 11409 32463 34227 13717421 41152263 123456789]
-runner.1.luy@worker-2| 06:00:17 Connection to silly_shtern closed
-runner.1.luy@worker-2| 06:00:17 Bye!
+runner.1.luy@worker-2 05:59:31 Welcome to PARCS-Go!
+runner.1.luy@worker-2 05:59:31 Running your program...
+runner.1.luy@worker-2 06:00:06 Connection to silly_shtern established
+runner.1.luy@worker-2 06:00:17 Factors [1 3 9 3607 3803 10821 11409 32463 34227 13717421 41152263 123456789]
+runner.1.luy@worker-2 06:00:17 Connection to silly_shtern closed
+runner.1.luy@worker-2 06:00:17 Bye!
 
 me@leader~:$ sudo docker service rm runner
 ```
