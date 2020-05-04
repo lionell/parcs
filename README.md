@@ -1,5 +1,7 @@
 # PARCS
 
+![logo](/logo.png)
+
 This is a state-of-the-art implementation of the PARCS system described in [the paper][paper]. It's heterogeneous in the nature implying that
 it's language agnostic. Heavily relies on the [Docker Swarm][swarm] and [Docker's][docker] networking features. Under the hood it's a set of a libraries
 that allow one to operate a swarm in a PARCS-specific fashion.
@@ -196,7 +198,7 @@ func (h *Program) Run() {
 	t.SendAll(n, 1, n+1)
 	var facts []int
 	t.Recv(&facts)
-	log.Printf("Factors found %v", facts)
+	log.Printf("Factors %v", facts)
 	t.Shutdown()
 }
 
@@ -234,7 +236,12 @@ me@laptop~:$ docker push lionell/runner-go:latest
 ### Running PARCS modules
 
 In order to run a PARCS runner on a cluster you need to know **internal IP of the leader**. It can be obtained from
-the Google Compute Engine UI or by firing this command from the `laptop`: `$ gcloud compute instances list | grep leader | awk '{print $4}'`
+the Google Compute Engine UI or by firing this command:
+
+```
+me@laptop~:$ gcloud compute instances list | grep leader | awk '{print "tcp://" $4 ":4321"}'
+tcp://10.138.0.6:4321
+```
 
 Now to start a service just do this:
 
@@ -269,6 +276,52 @@ Last 3 parameters are ones that change between invocations:
 * `--env N=123456789` is specific for this particular runner and tells that we're interested in divisors of that number.
 * `lionell/runner-go` is a Docker image that contains the runner itself.
 
+### PARCS Web UI
+
+#### Installing Swarmpit
+
+Comprehensive guide for the installation can be found on the [Github page][swarmpit-install]. Here I'll show the easiest
+way to do it
+
+```console
+me@laptop~:$ gcloud compute ssh leader
+me@leader~:$ docker run -it --rm \
+                        --name swarmpit-installer \
+                        --volume /var/run/docker.sock:/var/run/docker.sock \
+                        swarmpit/install:1.9
+...
+Summary
+Username: admin
+Password: password
+Swarmpit is running on port :888
+
+Enjoy :)
+```
+
+It will ask you to set up an admin account for the control panel. Make sure that you remember the credentials as you'll
+need them later to access the dashboard.
+
+#### Setting up a firewall
+
+The last step is to make a firewall aware of the Swarmpit. We want to expose a default port `888` to the outside world.
+
+```console
+me@laptop~:$ gcloud compute firewall-rules create swarmpit --allow tcp:888
+Creating firewall...done.                                                                                                                                                                                                                                                                                                                                                                     
+NAME     NETWORK  DIRECTION  PRIORITY  ALLOW    DENY  DISABLED
+swarmpit default  INGRESS    1000      tcp:888        False
+```
+
+After this is done you can navigate to the external IP address of the `leader` and use a beautiful web UI to manage the
+cluster. Here's one way to obtain the URL
+
+```console
+me@laptop~:$ gcloud compute instances list | grep leader | awk '{print "http://" $5 ":888"}'
+http://35.247.55.235:888
+```
+
+![Swarmpit dashboard image](/dashboard.png)
+
 ### Cleaning up
 
 Don't forget to remove all created VMs. If you don't do it GCP can charge you!
@@ -295,3 +348,4 @@ me@laptop~:$ gcloud compute instances delete leader worker-1 worker-2 worker-3
 [docker-hub]: https://hub.docker.com
 [parcs-py]: https://hub.docker.com/repository/docker/lionell/parcs-py
 [parcs-go]: https://hub.docker.com/repository/docker/lionell/parcs-go
+[swarmpit-install]: https://github.com/swarmpit/swarmpit
