@@ -70,7 +70,6 @@ $ sudo sh get-docker.sh
 
 ...
 ```
-
 Make sure that you do this step for every node in the cluster replacing `leader` with a corresponding name.
 
 4. It's time to initialize a swarm. We can do this by `ssh`-ing into a `leader` and running commands:
@@ -97,14 +96,13 @@ $ gcloud compute ssh worker-1
 (ssh-ed into worker-1)
 
 $ sudo docker swarm join --token \
-                SWMTKN-1-4cj55yg229l3updnigyz86p63x9bb599htytlmtbhulo4m633d-4kcfduodzvitw4y52flh19g32 \
-                10.138.0.6:2377
+         SWMTKN-1-4cj55yg229l3updnigyz86p63x9bb599htytlmtbhulo4m633d-4kcfduodzvitw4y52flh19g32 \
+         10.138.0.6:2377
 
 This node joined a swarm as a worker.
 
 ```
-
-Don't forget to do this step for **each one** of the `worker` nodes you created.
+Don't forget to do this step for each one of the `worker` nodes you created.
 
 [paper]: https://www.scirp.org/journal/paperinformation.aspx?paperid=78011 
 [swarm]: https://docs.docker.com/engine/swarm
