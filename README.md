@@ -43,7 +43,7 @@ and follow the instructions. I'm also gonna set up the sensible defaults for my 
 
 2. Now let's start a couple of VMs that are will form a cluster later. Here I'm creating a cluster of 4 nodes that will be managed by a leader.
 
-    ```
+    ```shell
     $ gcloud compute instances create leader worker-1 worker-2 worker-3
     
     Created [https://www.googleapis.com/compute/v1/projects/ember-27/zones/us-west1-b/instances/leader].
@@ -61,7 +61,7 @@ and follow the instructions. I'm also gonna set up the sensible defaults for my 
 3. Unfortunatelly the default Debian image doesn't ship Docker by default, but we can use this [convenience script][convenience-script] to install
 the engine as follows
 
-    ```
+    ```shell
     $ gcloud compute ssh leader
     (ssh-ed into leader)
     
@@ -75,7 +75,7 @@ the engine as follows
 
 4. It's time to initialize a swarm. We can do this by `ssh`-ing into a `leader` and running commands:
 
-    ```
+    ```shell
     $ gcloud compute ssh leader
     (ssh-ed into leader)
     
@@ -92,7 +92,7 @@ the engine as follows
 
 5. Having a `join-token` from the previous step we can connect `worker` nodes to a `leader` like follows:
 
-    ```
+    ```shell
     $ gcloud compute ssh worker-1
     (ssh-ed into worker-1)
     
