@@ -97,7 +97,7 @@ the engine as follows
 
     Don't forget to do this step **for each one** of the `worker` nodes you created.
 
-6. **IMPORTANT** PARCS needs `leader`-s Docker Engine to listen on the port `4321`.
+6. **IMPORTANT!** PARCS needs `leader`-s Docker Engine to listen on the port `4321`.
 
     This is the only extra step that users have to take to be able to run PARCS on a
     barebones Docker Swarm cluster. Here are commands that do exactly that
@@ -111,6 +111,31 @@ the engine as follows
     ```
 
 Now we have a fully configured Docker Swarm cluster ready to run PARCS services.
+
+### Running PARCS module
+
+All the PARCS modules (aka services) should be accessible from some Docker registry. We're going to use a
+default [Docker Hub][docker-hub] registry here as an example. All the example code can be found in this repo
+under `go/` and `py/` subdirs.
+
+Let's take a look at the simple PARCS service written in Python that given a number `N` and a range `[A; B)`
+just iterates in a range looking for divisors of `N`. This service can be implemented like:
+
+```python
+import logging
+from parcs.server import Service, serve
+
+class Factor(Service):
+    def run(self):
+        n, a, b = self.recv(), self.recv(), self.recv()
+        facts = []
+        for i in range(a, b):
+            if n % i == 0:
+                facts.append(i)
+        self.send(facts)
+
+serve(Factor())
+```
 
 [paper]: https://www.scirp.org/journal/paperinformation.aspx?paperid=78011 
 [swarm]: https://docs.docker.com/engine/swarm
@@ -126,3 +151,4 @@ Now we have a fully configured Docker Swarm cluster ready to run PARCS services.
 [gcloud]: https://cloud.google.com/sdk/gcloud
 [gce]: https://cloud.google.com/compute
 [convenience-script]: https://docs.docker.com/engine/install/debian/#install-using-the-convenience-script
+[docker-hub]: https://hub.docker.com
