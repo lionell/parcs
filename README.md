@@ -283,10 +283,10 @@ way to do it
 
 ```console
 me@laptop~:$ gcloud compute ssh leader
-me@leader~:$ docker run -it --rm \
-                        --name swarmpit-installer \
-                        --volume /var/run/docker.sock:/var/run/docker.sock \
-                        swarmpit/install:1.9
+me@leader~:$ sudo docker run -it --rm \
+                             --name swarmpit-installer \
+                             --volume /var/run/docker.sock:/var/run/docker.sock \
+                             swarmpit/install:1.9
 ...
 Summary
 Username: admin
