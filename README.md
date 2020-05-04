@@ -15,12 +15,13 @@ Features:
 ## Cluster management
 
 One of the biggest advantages of this PARCS implementation is that it doesn't require any special setup. Any Docker Swarm cluster will do!
-There are many nice tutorials that teach how to bring up a Docker Swarm cluster: [1][cluster-1], [2][cluster-2] and [3][cluster-3].
+There are many nice tutorials that teach how to bring up a Docker Swarm cluster: [[1]][cluster-1], [[2]][cluster-2] and [[3]][cluster-3].
 
 ### Why Swarm and not Kubernetes?
 
 Some of you might be wondering why I decided to base project on Swarm and not on [Kubernetes][kubernetes]. There are multiple reasons for
 this decision:
+
 * Kubernetes cluster is harder to set up and maintain.
 * PARCS only need a small subset of the features provided by platform.
 * Docker Swarm is now shipped as part of the standard Docker distribution.
@@ -29,6 +30,7 @@ this decision:
 As a matter of fact I'm only using load balancing(distributed service deployment) and automatic service discovery(overlay network) features
 provided by both platforms. Everything else is a plain old Docker and it's friends.
 
+There are more detailed articles on the web that compare two platforms on the multiple axes: [[1]][swarm-vs-kubernetes-1], [[2]][swarm-vs-kubernetes-2].
 Now let's take a look at how easy it is to bring up a Docker Swarm cluster on the [Google Cloud Platform][gcp].
 
 ### Swarm cluster on GCP
@@ -44,10 +46,10 @@ and follow the instructions. I'm also gonna set up the sensible defaults for my 
 ```
 $ gcloud compute instances create leader worker-1 worker-2 worker-3
 
-Created [https://www.googleapis.com/compute/v1/projects/genuine-ember-275604/zones/us-west1-b/instances/leader].
-Created [https://www.googleapis.com/compute/v1/projects/genuine-ember-275604/zones/us-west1-b/instances/worker-1].
-Created [https://www.googleapis.com/compute/v1/projects/genuine-ember-275604/zones/us-west1-b/instances/worker-2].
-Created [https://www.googleapis.com/compute/v1/projects/genuine-ember-275604/zones/us-west1-b/instances/worker-3].
+Created [https://www.googleapis.com/compute/v1/projects/ember-275604/zones/us-west1-b/instances/leader].
+Created [https://www.googleapis.com/compute/v1/projects/ember-275604/zones/us-west1-b/instances/worker-1].
+Created [https://www.googleapis.com/compute/v1/projects/ember-275604/zones/us-west1-b/instances/worker-2].
+Created [https://www.googleapis.com/compute/v1/projects/ember-275604/zones/us-west1-b/instances/worker-3].
 
 NAME      ZONE        MACHINE_TYPE   PREEMPTIBLE  INTERNAL_IP  EXTERNAL_IP     STATUS
 leader    us-west1-b  n1-standard-1               10.138.0.6   35.247.55.235   RUNNING
@@ -79,14 +81,18 @@ Swarm initialized: current node (p7ywd9wbh6th1hy6t5hlsqv0w) is now a manager.
 
 To add a worker to this swarm, run the following command:
 
-    docker swarm join --token SWMTKN-1-4cj55yg229l3updnigyz86p63x9bb599htytlmtbhulo4m633d-4kcfduodzvitw4y52flh19g32 10.138.0.6:2377
+    docker swarm join \
+      --token SWMTKN-1-4cj55yg229l3updnigyz86p63x9bb599htytlmtbhulo4m633d-4kcfduodzvitw4y52flh19g32 \
+      10.138.0.6:2377
 ```
 
 5. Having a `join-token` from the previous step we can connect `worker` nodes to a `leader` like follows:
 
 ```
 $ gcloud compute ssh worker-1
-(worker-1): $ sudo docker swarm join --token SWMTKN-1-4cj55yg229l3updnigyz86p63x9bb599htytlmtbhulo4m633d-4kcfduodzvitw4y52flh19g32 10.138.0.6:2377
+(worker-1): $ sudo docker swarm join \
+                --token SWMTKN-1-4cj55yg229l3updnigyz86p63x9bb599htytlmtbhulo4m633d-4kcfduodzvitw4y52flh19g32 \
+                10.138.0.6:2377
 
 This node joined a swarm as a worker.
 
@@ -102,6 +108,8 @@ Don't forget to do this step for **each one** of the `worker` nodes you created.
 [cluster-3]: https://rominirani.com/docker-swarm-tutorial-b67470cf8872
 [kubernetes]: https://kubernetes.io
 [kiss]: https://en.wikipedia.org/wiki/KISS_principle
+[swarm-vs-kubernetes-1]: https://vexxhost.com/blog/kubernetes-vs-docker-swarm-containerization-platforms
+[swarm-vs-kubernetes-2]: https://thenewstack.io/kubernetes-vs-docker-swarm-whats-the-difference
 [gcp]: http://cloud.google.com
 [gcloud]: https://cloud.google.com/sdk/gcloud
 [gce]: https://cloud.google.com/compute
