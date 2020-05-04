@@ -85,8 +85,8 @@ Swarm initialized: current node (p7ywd9wbh6th1hy6t5hlsqv0w) is now a manager.
 
 To add a worker to this swarm, run the following command:
 
-    docker swarm join \
-      --token SWMTKN-1-4cj55yg229l3updnigyz86p63x9bb599htytlmtbhulo4m633d-4kcfduodzvitw4y52flh19g32 \
+    docker swarm join --token \
+      SWMTKN-1-4cj55yg229l3updnigyz86p63x9bb599htytlmtbhulo4m633d-4kcfduodzvitw4y52flh19g32 \
       10.138.0.6:2377
 ```
 
@@ -96,8 +96,8 @@ To add a worker to this swarm, run the following command:
 $ gcloud compute ssh worker-1
 (ssh-ed into worker-1)
 
-$ sudo docker swarm join \
-                --token SWMTKN-1-4cj55yg229l3updnigyz86p63x9bb599htytlmtbhulo4m633d-4kcfduodzvitw4y52flh19g32 \
+$ sudo docker swarm join --token \
+                SWMTKN-1-4cj55yg229l3updnigyz86p63x9bb599htytlmtbhulo4m633d-4kcfduodzvitw4y52flh19g32 \
                 10.138.0.6:2377
 
 This node joined a swarm as a worker.
