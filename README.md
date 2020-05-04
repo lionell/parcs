@@ -63,8 +63,10 @@ the engine as follows
 
 ```
 $ gcloud compute ssh leader
-(ssh): $ curl -fsSL https://get.docker.com -o get-docker.sh
-(ssh): $ sudo sh get-docker.sh
+(ssh-ed into leader)
+
+$ curl -fsSL https://get.docker.com -o get-docker.sh
+$ sudo sh get-docker.sh
 
 ...
 ```
@@ -75,7 +77,9 @@ Make sure that you do this step for every node in the cluster replacing `leader`
 
 ```
 $ gcloud compute ssh leader
-(ssh): $ sudo docker swarm init
+(ssh-ed into leader)
+
+$ sudo docker swarm init
 
 Swarm initialized: current node (p7ywd9wbh6th1hy6t5hlsqv0w) is now a manager.
 
@@ -90,7 +94,9 @@ To add a worker to this swarm, run the following command:
 
 ```
 $ gcloud compute ssh worker-1
-(ssh): $ sudo docker swarm join \
+(ssh-ed into worker-1)
+
+$ sudo docker swarm join \
                 --token SWMTKN-1-4cj55yg229l3updnigyz86p63x9bb599htytlmtbhulo4m633d-4kcfduodzvitw4y52flh19g32 \
                 10.138.0.6:2377
 
