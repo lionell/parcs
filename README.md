@@ -116,11 +116,12 @@ All the PARCS modules (aka services) should be accessible from some Docker regis
 default [Docker Hub][docker-hub] registry here as an example. All the example code can be found in this repo
 under `go/` and `py/` subdirs.
 
+#### Example service
+
 Let's take a look at the simple PARCS service written in Python that given a number `N` and a range `[A; B)`
 just iterates in a range looking for divisors of `N`. This service can be implemented like:
 
 ```python
-import logging
 from parcs.server import Service, serve
 
 class Factor(Service):
@@ -145,7 +146,7 @@ FROM lionell/parcs-py
 COPY main.py .
 CMD [ "python", "main.py" ]
 
-me@laptop~:$ docker build -t lionell/factor .
+me@laptop~:$ docker build -t lionell/factor-py .
 Sending build context to Docker daemon  3.072kB
 Step 1/3 : FROM lionell/parcs-py
  ---> ef17f28e7f39
@@ -156,7 +157,71 @@ Step 3/3 : CMD [ "python", "main.py" ]
  ---> Using cache
  ---> ea69c5b3c156
 Successfully built ea69c5b3c156
-Successfully tagged lionell/factor:latest
+Successfully tagged lionell/factor-py:latest
+
+me@laptop~:$ docker push lionell/factor-py:latest
+```
+
+PARCS provides base Docker images for all supported languages: [lionell/parcs-py][parcs-py], [lionell/parcs-go][parcs-go]
+
+#### Example runner
+
+PARCS needs a special type of jobs that will kick off the computation. These are **Runners** and they can be
+implemented in a very similar way to a servises:
+
+```go
+package main
+
+import (
+	"github.com/lionell/parcs/go/parcs"
+    "log"
+	"os"
+	"strconv"
+)
+
+type Program struct {
+	*parcs.Runner
+}
+
+func (h *Program) Run() {
+	n, _ := strconv.Atoi(os.Getenv("N"))
+	t, _ := h.Start("lionell/factor-py")
+	t.SendAll(n, 1, n+1)
+	var facts []int
+	t.Recv(&facts)
+	log.Printf("Factors found %v", facts)
+	t.Shutdown()
+}
+
+func main() {
+	parcs.Exec(&Program{parcs.DefaultRunner()})
+}
+```
+
+Again, assuming this code lives in the file `main.go` we can build a Docker image for this program by running:
+
+```console
+me@laptop~:$ wget https://raw.githubusercontent.com/lionell/parcs/master/go/Dockerfile
+me@laptop~:$ cat Dockerfile
+FROM lionell/parcs-go
+
+COPY main.go .
+CMD [ "go", "run ", "main.go" ]
+
+me@laptop~:$ docker build -t lionell/runner-go .
+Sending build context to Docker daemon  3.584kB
+Step 1/3 : FROM lionell/parcs-go
+ ---> 4d6be0e795ec
+Step 2/3 : COPY main.go .
+ ---> f1fe810151ba
+Step 3/3 : CMD [ "go", "run", "main.go" ]
+ ---> Running in bd9c0480b072
+Removing intermediate container bd9c0480b072
+ ---> 63a8a590eefc
+Successfully built 63a8a590eefc
+Successfully tagged lionell/runner-go:latest
+
+me@laptop~:$ docker push lionell/runner-go:latest
 ```
 
 ### Cleaning up
@@ -183,3 +248,5 @@ me@laptop~:$ gcloud compute instances delete leader worker-1 worker-2 worker-3
 [gce]: https://cloud.google.com/compute
 [convenience-script]: https://docs.docker.com/engine/install/debian/#install-using-the-convenience-script
 [docker-hub]: https://hub.docker.com
+[parcs-py]: https://hub.docker.com/repository/docker/lionell/parcs-py
+[parcs-go]: https://hub.docker.com/repository/docker/lionell/parcs-go
