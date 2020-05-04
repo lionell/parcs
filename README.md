@@ -107,10 +107,17 @@ the engine as follows
     me@leader~:$ sudo systemctl daemon-reload
     me@leader~:$ sudo systemctl restart docker
     ```
+    
+7. **IMPORTANT!** PARCS is also utilizing a custom overlay network that one can create by typing:
+
+    ```console
+    me@laptop~:$ gcloud compute ssh leader
+    me@leader~:$ sudo docker network create -d overlay parcs
+    ```
 
 Now we have a fully configured Docker Swarm cluster ready to run PARCS services.
 
-### Running PARCS module
+### Writing PARCS modules
 
 All the PARCS modules (aka services) should be accessible from some Docker registry. We're going to use a
 default [Docker Hub][docker-hub] registry here as an example. All the example code can be found in this repo
@@ -223,6 +230,44 @@ Successfully tagged lionell/runner-go:latest
 
 me@laptop~:$ docker push lionell/runner-go:latest
 ```
+
+### Running PARCS modules
+
+In order to run a PARCS runner on a cluster you need to know **internal IP of the leader**. It can be obtained from
+the Google Compute Engine UI or by firing this command from the `laptop`: `$ gcloud compute instances list | grep leader | awk '{print $4}'`
+
+Now to start a service just do this:
+
+```console
+me@laptop~:$ gcloud compute ssh leader
+me@leader~:$ sudo docker service create \
+                    --network parcs \
+                    --restart-condition none \
+                    --env LEADER_URL=tcp://<LEADER INTERNAL IP>:4321 \
+                    --name runner \
+                    --env N=123456789 \
+                    lionell/runner-go
+
+bjchstu57756oq5ppa6lgg1c3
+overall progress: 1 out of 1 tasks 
+1/1: running   [==================================================>] 
+verify: Service converged 
+
+me@leader~:$ sudo docker service logs -f runner
+runner.1.luyyvtyfbui9@worker-2    | 2020/05/04 05:59:31 Welcome to PARCS-Go!
+runner.1.luyyvtyfbui9@worker-2    | 2020/05/04 05:59:31 Running your program...
+runner.1.luyyvtyfbui9@worker-2    | 2020/05/04 06:00:06 Connection to silly_shtern established
+runner.1.luyyvtyfbui9@worker-2    | 2020/05/04 06:00:17 Factors found [1 3 9 3607 3803 10821 11409 32463 34227 13717421 41152263 123456789]
+runner.1.luyyvtyfbui9@worker-2    | 2020/05/04 06:00:17 Connection to silly_shtern closed
+runner.1.luyyvtyfbui9@worker-2    | 2020/05/04 06:00:17 Bye!
+
+me@leader~:$ sudo docker service rm runner
+```
+
+Last 3 parameters are ones that change between invocations:
+* `--name` is a way to give an invocation a name that can later be used to obtain the results of a specific invocation.
+* `--env N=123456789` is specific for this particular runner and tells that we're interested in divisors of that number.
+* `lionell/runner-go` is a Docker image that contains the runner itself.
 
 ### Cleaning up
 
