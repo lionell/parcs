@@ -70,6 +70,7 @@ the engine as follows
     
     ...
     ```
+
     Make sure that you do this step for every node in the cluster replacing `leader` with a corresponding name.
 
 4. It's time to initialize a swarm. We can do this by `ssh`-ing into a `leader` and running commands:
@@ -100,8 +101,8 @@ the engine as follows
              10.138.0.6:2377
     
     This node joined a swarm as a worker.
-    
     ```
+
     Don't forget to do this step for each one of the `worker` nodes you created.
 
 [paper]: https://www.scirp.org/journal/paperinformation.aspx?paperid=78011 
