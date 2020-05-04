@@ -61,7 +61,7 @@ and follow the instructions. I'm also gonna set up the sensible defaults for my 
 3. Unfortunatelly the default Debian image doesn't ship Docker by default, but we can use this [convenience script][convenience-script] to install
 the engine as follows
 
-    ```shell
+    ```console
     me@laptop~:$ gcloud compute ssh leader
     me@leader~:$ curl -fsSL https://get.docker.com -o get-docker.sh
     me@leader~:$ sudo sh get-docker.sh
