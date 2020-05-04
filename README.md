@@ -45,7 +45,6 @@ and follow the instructions. I'm also gonna set up the sensible defaults for my 
 
     ```console
     me@laptop~:$ gcloud compute instances create leader worker-1 worker-2 worker-3
-
     Created [https://www.googleapis.com/compute/v1/projects/ember-27/zones/us-west1-b/instances/leader].
     Created [https://www.googleapis.com/compute/v1/projects/ember-27/zones/us-west1-b/instances/worker-1].
     Created [https://www.googleapis.com/compute/v1/projects/ember-27/zones/us-west1-b/instances/worker-2].
@@ -74,7 +73,6 @@ the engine as follows
     ```console
     me@laptop~:$ gcloud compute ssh leader
     me@leader~:$ sudo docker swarm init
-    
     Swarm initialized: current node (p7ywd9wbh6th1hy6t5hlsqv0w) is now a manager.
     
     To add a worker to this swarm, run the following command:
