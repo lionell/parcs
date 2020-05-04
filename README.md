@@ -1,6 +1,4 @@
-# PARCS
-
-![logo](/logo.png)
+![PARCS logo](/logo.png)
 
 This is a state-of-the-art implementation of the PARCS system described in [the paper][paper]. It's heterogeneous in the nature implying that
 it's language agnostic. Heavily relies on the [Docker Swarm][swarm] and [Docker's][docker] networking features. Under the hood it's a set of a libraries
