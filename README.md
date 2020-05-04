@@ -1,14 +1,14 @@
 # PARCS
 
 This is a state-of-the-art implementation of the PARCS system described in [the paper][paper]. It's heterogeneous in the nature implying that
-it's language agnostic. Heavily relies on the [Docker Swarm][swarm] and Docker's networking features. Under the hood it's a set of a libraries
+it's language agnostic. Heavily relies on the [Docker Swarm][swarm] and [Docker's][docker] networking features. Under the hood it's a set of a libraries
 that allow one to operate a swarm in a PARCS-specific fashion.
 
 Features:
 * Works on any Docker Swarm cluster
 * Language agnostic design
 * Web UI powered by [Swarmpit][swarmpit]
-* Full isolation (thanks to Docker)
+* Full isolation (containerization)
 * Flexible dependency management
 * Centralized module repository
 
@@ -137,7 +137,40 @@ class Factor(Service):
 serve(Factor())
 ```
 
+Now assuming this code lives in the file `main.py` we can build a Docker image for this program by running:
+
+```console
+me@laptop~:$ wget https://raw.githubusercontent.com/lionell/parcs/master/py/Dockerfile
+me@laptop~:$ cat Dockerfile
+FROM lionell/parcs-py
+
+COPY main.py .
+CMD [ "python", "main.py" ]
+
+me@laptop~:$ docker build -t lionell/factor .
+Sending build context to Docker daemon  3.072kB
+Step 1/3 : FROM lionell/parcs-py
+ ---> ef17f28e7f39
+Step 2/3 : COPY main.py .
+ ---> Using cache
+ ---> 28f7e7b055d6
+Step 3/3 : CMD [ "python", "main.py" ]
+ ---> Using cache
+ ---> ea69c5b3c156
+Successfully built ea69c5b3c156
+Successfully tagged lionell/factor:latest
+```
+
+### Cleaning up
+
+Don't forget to remove all created VMs. If you don't do it GCP can charge you!
+
+```console
+me@laptop~:$ gcloud compute instances delete leader worker-1 worker-2 worker-3
+```
+
 [paper]: https://www.scirp.org/journal/paperinformation.aspx?paperid=78011 
+[docker]: https://www.docker.com
 [swarm]: https://docs.docker.com/engine/swarm
 [swarmpit]: https://swarmpit.io
 [cluster-1]: https://docs.docker.com/engine/swarm/swarm-tutorial/create-swarm
