@@ -65,19 +65,15 @@ the engine as follows
     me@laptop~:$ gcloud compute ssh leader
     me@leader~:$ curl -fsSL https://get.docker.com -o get-docker.sh
     me@leader~:$ sudo sh get-docker.sh
-    
-    ...
     ```
 
     Make sure that you do this step for every node in the cluster replacing `leader` with a corresponding name.
 
 4. It's time to initialize a swarm. We can do this by `ssh`-ing into a `leader` and running commands:
 
-    ```shell
-    $ gcloud compute ssh leader
-    (ssh-ed into leader)
-    
-    $ sudo docker swarm init
+    ```console
+    me@laptop~:$ gcloud compute ssh leader
+    me@leader~:$ sudo docker swarm init
     
     Swarm initialized: current node (p7ywd9wbh6th1hy6t5hlsqv0w) is now a manager.
     
@@ -90,11 +86,9 @@ the engine as follows
 
 5. Having a `join-token` from the previous step we can connect `worker` nodes to a `leader` like follows:
 
-    ```shell
-    $ gcloud compute ssh worker-1
-    (ssh-ed into worker-1)
-    
-    $ sudo docker swarm join --token \
+    ```console
+    me@laptop~:$ gcloud compute ssh worker-1
+    me@worker-1~:$ sudo docker swarm join --token \
              SWMTKN-1-4cj55yg229l3updnigyz86p63x9bb599htytlmtbhulo4m633d-4kcfduodzvitw4y52flh19g32 \
              10.138.0.6:2377
     
