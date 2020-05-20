@@ -18,7 +18,7 @@ class Task:
     def shutdown(self):
         self.client.close()
         self.service.remove()
-        logging.info(f'Connection to {service.name} closed')
+        logging.info(f'Connection to {self.service.name} closed')
 
     def send(self, obj):
         send(self.client, obj)
