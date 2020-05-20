@@ -62,8 +62,7 @@ the engine as follows
 
     ```console
     me@laptop~:$ gcloud compute ssh leader
-    me@leader~:$ curl -fsSL https://get.docker.com -o get-docker.sh
-    me@leader~:$ sudo sh get-docker.sh
+    me@leader~:$ curl -fsSL https://get.docker.com | sudo sh
     ```
 
     Make sure that you do this step for every node in the cluster replacing `leader` with a corresponding name.
@@ -236,7 +235,7 @@ me@laptop~:$ docker push lionell/runner-go:latest
 In order to run a PARCS runner on a cluster you need to know **internal IP of the leader**. It can be obtained from
 the Google Compute Engine UI or by firing this command:
 
-```
+```console
 me@laptop~:$ gcloud compute instances list | grep leader | awk '{print "tcp://" $4 ":4321"}'
 tcp://10.138.0.6:4321
 ```
@@ -327,6 +326,7 @@ Don't forget to remove all created VMs. If you don't do it GCP can charge you!
 
 ```console
 me@laptop~:$ gcloud compute instances delete leader worker-1 worker-2 worker-3
+me@laptop~:$ gcloud compute firewall-rules delete swarmpit
 ```
 
 [paper]: https://www.scirp.org/journal/paperinformation.aspx?paperid=78011 
