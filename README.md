@@ -39,7 +39,6 @@ Now let's take a look at how easy it is to bring up a Docker Swarm cluster on th
 
 ```console
 me@laptop~:$ sh gce-parcs.sh
-
 Number of workers: 3
 GCE instances for leader and 3 workers created
 Docker installed on leader
