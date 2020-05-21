@@ -66,6 +66,7 @@ tell "Firewall rule for Swarmpit created"
 
 url=$(gcloud compute instances list | grep leader | awk '{print "http://" $5 ":888"}')
 leader_url=$(gcloud compute instances list | grep leader | awk '{print "tcp://" $4 ":4321"}')
+tell "---------------------------------------"
 tell "LEADER_URL=${leader_url}"
 tell "Dashboard URL: ${url}"
 tell "Login: admin"
