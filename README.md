@@ -35,6 +35,30 @@ Now let's take a look at how easy it is to bring up a Docker Swarm cluster on th
 
 ### Swarm cluster on GCP
 
+#### TL; DR One can use `gce-parcs.sh` script to bootstrap cluster automatically in under 5 mins!
+
+```console
+me@laptop~:$ sh gce-parcs.sh
+
+Number of workers: 3
+GCE instances for leader and 3 workers created
+Docker installed on leader
+Docker installed on worker-1
+Docker installed on worker-2
+Docker installed on worker-3
+Docker Swarm initialized
+PARCS port (4321) is open on leader
+Overlay network created for PARCS
+Swarmpit installed
+Firewall rule for Swarmpit created
+LEADER_URL=tcp://10.138.0.25:4321
+Dashboard URL: http://34.83.234.248:888
+Login: admin
+Password: password
+```
+
+#### Manual setup
+
 I'm gonna be using a Google Cloud CLI tool called [gcloud][gcloud] to orchestrate the cluster from the command line. Also we'll use
 [Google Compute Engine][gce] as a basement for the cluster.
 
