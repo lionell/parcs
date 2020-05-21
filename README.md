@@ -50,6 +50,7 @@ PARCS port (4321) is open on leader
 Overlay network created for PARCS
 Swarmpit installed
 Firewall rule for Swarmpit created
+---------------------------------------
 LEADER_URL=tcp://10.138.0.25:4321
 Dashboard URL: http://34.83.234.248:888
 Login: admin
