@@ -35,7 +35,7 @@ Now let's take a look at how easy it is to bring up a Docker Swarm cluster on th
 
 ### Swarm cluster on GCP
 
-#### TL; DR One can use `gce-parcs.sh` script to bootstrap cluster automatically in under 5 mins!
+#### TL; DR One can use `gce-parcs.sh` script to bootstrap cluster in under 5 mins!
 
 ```console
 me@laptop~:$ sh gce-parcs.sh
